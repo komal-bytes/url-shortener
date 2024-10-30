@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "packages/*": [
+                "./packages/*"
+            ],
+            "*" : ["./*"]
+        }
+    },
+    "include": [
+        "./packages/**/*",
+        "./*"
+    ]
+}
