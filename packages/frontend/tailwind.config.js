@@ -47,10 +47,16 @@ module.exports = {
           '25%': { transform: 'rotate(10deg) scale(1.2)' },
           '75%': { transform: 'rotate(-10deg) scale(1.2)' },
         },
+        slide: {
+          '0%': { transform: 'translate(-50%, 0)', opacity: '0' },
+          '50%': { opacity: '1' },
+          '100%': { transform: 'translate(30%, 20%)', opacity: '1' },
+        },
       },
       animation: {
         'placeholder-animation': 'fadeUpDown 3s linear infinite',
         'wobble-slow': 'wobble 1.5s ease-in-out infinite',
+        slide: 'slide 0.5s ease-out forwards',
       },
     },
   },

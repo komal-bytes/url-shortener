@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@nextui-org/react';
-import { useLocation } from 'react-router-dom';
+import { MdOutlineErrorOutline } from "react-icons/md";
+import { GiConfirmed } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
 
 const Confirm: React.FC = () => {
+    const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [error, setError] = useState(false)
-    const location = useLocation();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.hash.slice(1)); // Slice(1) to remove leading '#'
@@ -26,13 +28,14 @@ const Confirm: React.FC = () => {
     return (
         <div
             className="flex flex-col justify-center items-center text-center min-h-screen bg-gray-50"
-        // css={{ textAlign: 'center' }}
         >
-            <p className="mb-4">{message}</p>
+            {error ? <MdOutlineErrorOutline className='text-red-500 text-[100px] mb-4' /> : <GiConfirmed className='text-green-500 text-[100px] mb-4' />}
+            <p className="mb-4 text-2xl">{message}</p>
             <Button
-                onClick={() => window.open("/")}
+                className='text-lg'
+                onClick={() => navigate("/")}
                 color="primary">
-                {error ? "Create Account" : "Log in"}
+                {error ? "Create Account" : "Visit Site"}
             </Button>
         </div >
     );

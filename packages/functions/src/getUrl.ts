@@ -8,7 +8,6 @@ const dynamoDb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 export const getUrl = async (event) => {
     try {
         const id = event.req.param('id');
-        // console.log(id , "id")
         if (!id) {
             return event.json({
                 statusCode: 400,
@@ -24,7 +23,7 @@ export const getUrl = async (event) => {
 
         const result = await dynamoDb.send(new GetCommand(getParams));
 
-        console.log(result)
+        // console.log(result)
 
         if (!result.Item) {
             return event.json({
@@ -35,10 +34,8 @@ export const getUrl = async (event) => {
 
         const originalUrl = result.Item.originalUrl;
 
-        return event.json({
-            statusCode: 200,
-            url: originalUrl,
-        });
+        return event.redirect(originalUrl)
+
 
     } catch (error) {
         console.error("Error fetching URL from DynamoDB:", error);

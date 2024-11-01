@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import IndexPage from "@/pages/index";
-import AuthPage from "./pages/Auth";
-import Confirm from "./pages/Confirm";
-import Home from "./pages/Home";
-import PrivateRoute from "./utils/PrivateRoute";
+import AuthPage from "@/pages/Auth";
+import Confirm from "@/pages/Confirm";
+import PrivateRoute from "@/utils/PrivateRoute";
 import { useEffect, useState } from "react";
-import { supabase } from "./supabaseClient";
+import { supabase } from "@/supabaseClient";
+import Analytics from "@/pages/Analytics";
+import Dashboard from "@/pages/Dashboard";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(()=>{})
+    } = supabase.auth.onAuthStateChange(() => { })
 
     return () => subscription.unsubscribe()
   }, [])
@@ -29,7 +30,8 @@ function App() {
       <Route element={<AuthPage />} path="/auth" />
       <Route element={<Confirm />} path="/confirm" />
       <Route path="/*" element={<PrivateRoute />}>
-        <Route element={<Home />} path="" />
+        <Route element={<Dashboard />} path="" />
+        <Route element={<Analytics />} path="analytics" />
       </Route>
     </Routes>
   );

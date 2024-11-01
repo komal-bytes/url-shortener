@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import DefaultLayout from '@/layouts/default';
 
 const PrivateRoute: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState("dashboard")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,9 +25,9 @@ const PrivateRoute: React.FC = () => {
         checkSession();
     }, [navigate]);
 
-    if (isLoading) return null; // Or a loading spinner if you prefer
+    if (isLoading) return null;
 
-    return <><Outlet /></>;
+    return <DefaultLayout page={page} setPage={setPage}><Outlet /></DefaultLayout>;
 };
 
 export default PrivateRoute;

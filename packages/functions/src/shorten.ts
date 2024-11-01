@@ -12,7 +12,8 @@ export const shorten = async (event) => {
         const body = await event.req.json();
         const originalUrl = body?.url;
         const customUrl = body?.customUrl;
-        const domain = event.req.url
+        const parsedUrl = new URL(event.req.url);
+        const domain = parsedUrl.hostname;
 
         if (!originalUrl) {
             throw new Error("URL parameter is required.")

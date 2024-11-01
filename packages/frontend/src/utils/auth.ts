@@ -16,7 +16,7 @@ export const signInWithGitHub = async () => {
     return await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-            redirectTo: `http://127.0.0.1:5173/home`,
+            redirectTo: `http://127.0.0.1:5173/`,
         },
     })
 };

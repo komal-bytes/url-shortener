@@ -24,8 +24,18 @@ import {
   SearchIcon,
 } from "@/components/icons";
 import { Logo } from "@/components/icons";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = ({
+  page,
+  setPage
+}: {
+  page: string;
+  setPage: Function
+}) => {
+
+  const location = useLocation();
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -56,11 +66,11 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="font-bold text-inherit logo text-primary select-none">QuickLink</p>
           </Link>
         </NavbarBrand>
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
+
+        {/* <div className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <Link
@@ -75,10 +85,11 @@ export const Navbar = () => {
               </Link>
             </NavbarItem>
           ))}
-        </div>
+        </div> */}
+
       </NavbarContent>
 
-      <NavbarContent
+      {/* <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
@@ -94,7 +105,9 @@ export const Navbar = () => {
           </Link>
           <ThemeSwitch />
         </NavbarItem>
+
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+
         <NavbarItem className="hidden md:flex">
           <Button
             isExternal
@@ -107,9 +120,10 @@ export const Navbar = () => {
             Sponsor
           </Button>
         </NavbarItem>
-      </NavbarContent>
 
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+      </NavbarContent> */}
+
+      <NavbarContent className="basis-1 pl-4" justify="end">
         <Link isExternal href={siteConfig.links.github}>
           <GithubIcon className="text-default-500" />
         </Link>
@@ -118,19 +132,19 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        {searchInput}
+        {/* {searchInput} */}
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
                 color={
-                  index === 2
+                  item.href === location.pathname
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
                       ? "danger"
                       : "foreground"
                 }
-                href="#"
+                href={`${item.href}`}
                 size="lg"
               >
                 {item.label}
