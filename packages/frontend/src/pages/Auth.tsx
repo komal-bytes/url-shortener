@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Button, Tabs, Tab, Spacer, Spinner } from '@nextui-org/react';
+import { Input, Button, Tabs, Tab, Spacer, Spinner, Link } from '@nextui-org/react';
 import { signUpWithEmail, signInWithEmail, signInWithGitHub } from '../utils/auth';
 import { FaGoogle, FaGithub } from "react-icons/fa";
-import Snackbar from '@/components/common/Snackbar';
-import { useSnackbar } from '@/hooks/useSnackbar';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const AuthPage: React.FC = () => {
 
   const navigate = useNavigate()
-  const { isOpen, type, message, openSnackbar, closeSnackbar } = useSnackbar();
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
@@ -21,13 +19,19 @@ const AuthPage: React.FC = () => {
     if (tab === "LogIn") {
       setLoading("login")
       const { error } = await signInWithEmail(loginEmail, loginPassword);
-      if (error) openSnackbar(`Error Logging In. ${error.message}`, "error");
-      else openSnackbar(`Logged in successfully`, "success");
+      if (error) toast.error(`Error Logging In. ${error.message}`);
+      else {
+        toast.success(`Logged in successfully`);
+        navigate('/')
+      }
     } else {
       setLoading("signup")
       const { error } = await signUpWithEmail(signupEmail, signupPassword);
-      if (error) openSnackbar(`Error Signing Up. ${error.message}`, "error");
-      else openSnackbar(`Signed up successfully. \n Check your mail for User confirmation.`, "success");
+      if (error) toast.error(`Error Signing Up. ${error.message}`);
+      else {
+        toast.success(`Signed up successfully. \n Check your mail for User confirmation.`);
+        navigate('/')
+      }
     }
     setLoading(false)
   };
@@ -38,9 +42,9 @@ const AuthPage: React.FC = () => {
   const handleGitHubAuth = async () => {
     setLoading("github")
     const { error } = await signInWithGitHub();
-    if (error) openSnackbar(`GitHub auth error. ${error.message}`, "error");
+    if (error) toast.error(`GitHub auth error. ${error.message}`);
     else {
-      openSnackbar("Successfully Signed In", "success")
+      toast.success("Successfully Signed In")
       navigate('/')
     }
   };
@@ -90,6 +94,7 @@ const AuthPage: React.FC = () => {
                 fullWidth
                 className="mb-4"
               />
+              <Link href="/reset-email-link" size='sm' target='_blank' className='w-full text-center block m-auto mb-1 hover:underline'>Forgot Password ?</Link>
               <Button onClick={handleloginEmailAuth} color='primary' fullWidth>
                 {loading === "login" ? <Spinner size='sm' color='default' /> : "Log In"}
               </Button>
@@ -98,9 +103,9 @@ const AuthPage: React.FC = () => {
                 Sign In with GitHub
               </Button>
               <Spacer y={0.5} />
-              <Button endContent={loading === "google" ? <Spinner size='sm' color='primary' /> : <FaGoogle />} fullWidth className=''>
+              {/* <Button endContent={loading === "google" ? <Spinner size='sm' color='primary' /> : <FaGoogle />} fullWidth className=''>
                 Sign In with Google
-              </Button>
+              </Button> */}
             </Tab>
 
             <Tab title="Create Account" key="CreateAccount" className='relative'>
@@ -130,16 +135,14 @@ const AuthPage: React.FC = () => {
                 Sign Up with GitHub
               </Button>
               <Spacer y={0.5} />
-              <Button endContent={loading === "google" ? <Spinner size='sm' color='primary' /> : <FaGoogle />} fullWidth>
+              {/* <Button endContent={loading === "google" ? <Spinner size='sm' color='primary' /> : <FaGoogle />} fullWidth>
                 Sign Up with Google
-              </Button>
+              </Button> */}
             </Tab>
           </Tabs>
 
         </div>
       </div>
-
-      {isOpen && <Snackbar message={message} onClose={closeSnackbar} type={type} />}
     </>
 
   );

@@ -5,11 +5,12 @@ const region = aws.getRegionOutput().name;
 
 export const frontend = new sst.aws.StaticSite("Frontend", {
     path: "packages/frontend",
+    // domain: "quicklink.komal.codes",
     build: {
         output: "dist",
         command: "bun run build",
     },
-    domain: $app.stage === "production" ? "demo.sst.dev" : undefined,
+    // domain: $app.stage === "production" ? "demo.sst.dev" : undefined,
     environment: {
         VITE_REGION: region,
         VITE_API_URL: hono.url,

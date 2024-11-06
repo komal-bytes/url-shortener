@@ -13,8 +13,13 @@
     "@aws-sdk/lib-dynamodb": "^3.679.0",
     "@supabase/supabase-js": "^2.46.0",
     "@types/aws-lambda": "^8.10.145",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "hono": "^4.6.8",
     "nanoid": "^5.0.8",
-    "sst": "3.2.61"
+    "sst": "3.2.61",
+    "ua-parser-js": "^2.0.0-rc.1"
   }
 }

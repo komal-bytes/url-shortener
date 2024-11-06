@@ -25,6 +25,11 @@ import {
 } from "@/components/icons";
 import { Logo } from "@/components/icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, useDisclosure } from "@nextui-org/react";
+import { supabase } from "@/supabaseClient";
+import { toast } from "react-toastify";
+import { useTheme } from "@/hooks/use-theme";
 
 export const Navbar = ({
   page,
@@ -35,6 +40,8 @@ export const Navbar = ({
 }) => {
 
   const location = useLocation();
+  const { isOpen: isChangePasswordOpen, onOpen, onOpenChange } = useDisclosure();
+  const [changingPassword, setChangingPassword] = useState(false);
 
   const searchInput = (
     <Input
@@ -56,21 +63,67 @@ export const Navbar = ({
       type="search"
     />
   );
+  const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false)
+  const [newPassword, setNewPassword] = useState("");
+
+  async function changePassword() {
+    let method = getUserSignUpMethod()
+    if (method != "email") {
+      toast("Can't change Password. No Email Id found attached with this account.")
+    } else {
+      setChangingPassword(true)
+      const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        console.error('Error updating password:', error.message);
+        toast(`Error updating password: ${error.message}`)
+
+      } else {
+        console.log('Password updated successfully');
+        toast('Password updated successfully')
+      }
+    }
+
+    onOpenChange();
+    setChangingPassword(false)
+    setNewPassword("")
+  }
+
+  async function getUserSignUpMethod() {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user) {
+      toast(`Error fetching user: ${error?.message}`);
+      return null;
+    }
+
+    const signUpMethod = user.app_metadata.provider;
+    console.log('User signed up using:', signUpMethod);
+    return signUpMethod;
+  }
+
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand className="gap-3 max-w-fit">
-          <Link
-            className="flex justify-start items-center gap-1"
-            color="foreground"
-            href="/"
-          >
-            <p className="font-bold text-inherit logo text-primary select-none">QuickLink</p>
-          </Link>
-        </NavbarBrand>
+    <>
+      <NextUINavbar maxWidth="xl" position="sticky"
+        isMenuOpen={isOpen} onMenuOpenChange={setIsOpen}
+      >
+        <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+          <NavbarBrand className="gap-3 max-w-fit">
+            <Link
+              className="flex justify-start items-center gap-1"
+              color="foreground"
+              href="/"
+            >
+              <p className="font-bold text-inherit logo text-primary select-none">QuickLink</p>
+            </Link>
+          </NavbarBrand>
 
-        {/* <div className="hidden lg:flex gap-4 justify-start ml-2">
+          {/* <div className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <Link
@@ -87,9 +140,9 @@ export const Navbar = ({
           ))}
         </div> */}
 
-      </NavbarContent>
+        </NavbarContent>
 
-      {/* <NavbarContent
+        {/* <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
@@ -123,36 +176,105 @@ export const Navbar = ({
 
       </NavbarContent> */}
 
-      <NavbarContent className="basis-1 pl-4" justify="end">
-        <Link isExternal href={siteConfig.links.github}>
-          <GithubIcon className="text-default-500" />
-        </Link>
-        <ThemeSwitch />
-        <NavbarMenuToggle />
-      </NavbarContent>
+        <NavbarContent className="basis-1 pl-4" justify="end">
+          <Link isExternal href={siteConfig.links.github}>
+            <GithubIcon className="text-default-500" />
+          </Link>
+          <ThemeSwitch />
+          <NavbarMenuToggle />
+        </NavbarContent>
 
-      <NavbarMenu>
-        {/* {searchInput} */}
-        <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  item.href === location.pathname
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+
+        <NavbarMenu className="w-3/4 md:w-2/3 lg:w-1/2 ml-auto">
+          {/* {searchInput} */}
+          <div className="mx-4 mt-2 flex flex-col gap-2">
+            {siteConfig.navMenuItems.map((item, index) => {
+              return <NavbarMenuItem key={`${item}-${index}`}>
+
+                {
+                  item?.label === "Change password"
+                    ?
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        // onOpen()
+                        navigate('/reset-email-link')
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                    :
+                    item?.label === "Logout"
+                      ?
+                      <div
+                        className="cursor-pointer text-danger"
+                        onClick={async () => {
+                          await supabase.auth.signOut()
+                          // console.log(theme)
+                          theme === "dark" && toggleTheme()
+                          // console.log(theme)
+                          navigate("/auth")
+                        }}
+                      >{item?.label}</div>
+                      :
+                      <Link
+                        onPress={() => {
+                          setIsOpen(false)
+                        }}
+                        color={
+                          item.href === location.pathname
+                            ? "primary"
+                            : index === siteConfig.navMenuItems.length - 1
+                              ? "danger"
+                              : "foreground"
+                        }
+                        href={`${item.href}`}
+                        size="lg"
+                      >
+                        {item.label}
+                      </Link>
                 }
-                href={`${item.href}`}
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </div>
-      </NavbarMenu>
-    </NextUINavbar>
+
+              </NavbarMenuItem>
+            })}
+          </div>
+        </NavbarMenu>
+      </NextUINavbar >
+
+      <Modal isOpen={isChangePasswordOpen} onOpenChange={() => {
+        onOpenChange()
+      }}
+      >
+        <ModalContent>
+          <ModalHeader>
+            Change Password
+          </ModalHeader>
+          <ModalBody>
+            <Input
+              label="New Password"
+              placeholder="Enter new password"
+              value={newPassword}
+              onChange={(e) => {
+                console.log(e.target.value)
+                setNewPassword(e.target.value)
+              }}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button size="sm" color="primary" onClick={() => {
+              onOpenChange()
+            }}>
+              Close
+            </Button>
+
+            <Button size="sm" className="bg-red-400" onClick={() => changePassword()}>
+              {changingPassword ? <Spinner size="sm" color="default" /> : "Change"}
+            </Button>
+
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+    </>
   );
 };

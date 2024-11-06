@@ -33,6 +33,8 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     onChange,
   });
 
+  console.log(isSelected, "is selected")
+
   useEffect(() => {
     setIsMounted(true);
   }, [isMounted]);

@@ -9,17 +9,21 @@ export default $config({
       home: "aws",
     };
   },
-  // async run() {
-  //   new sst.aws.StaticSite("UrlShortener", {
-  //     path: "site",
-  //   });
-  // },
 
   async run() {
+
+
 
     let hono = await import("./infra/api");
     await import("./infra/web");
     await import("./infra/storage");
+
+    // new sst.aws.Router("MyRouter", {
+    //   domain: "link.komal.codes",
+    //   routes: {
+    //     "/*": hono.hono.url
+    //   }
+    // });
 
     // return {
     //   UserPool: auth.userPool.id,
@@ -27,7 +31,7 @@ export default $config({
     //   IdentityPool: auth.identityPool.id,
     //   UserPoolClient: auth.userPoolClient.id,
     // };
-    
+
     return {
       api: hono.hono.url
     }

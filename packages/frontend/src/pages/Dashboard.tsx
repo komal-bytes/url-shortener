@@ -3,14 +3,12 @@ import React, { useState } from 'react';
 import { Input, Button, Dropdown, Tooltip, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { FiCopy, FiShare2, FiX, FiCode } from 'react-icons/fi';
 import axios from 'axios';
-import { useSnackbar } from '@/hooks/useSnackbar';
-import Snackbar from '@/components/common/Snackbar';
 import ShareableURLComponent from '@/components/Dashboard/ShareableURLComponent';
 import { sendRequest } from '@/utils/sendRequest';
+import { toast } from "react-toastify";
 
 const Dashboard: React.FC = () => {
 
-    const { isOpen, type, message, openSnackbar, closeSnackbar } = useSnackbar();
     const [url, setUrl] = useState('');
     const [customUrl, setCustomUrl] = useState('');
     const [isCustomUrl, setIsCustomUrl] = useState(false);
@@ -20,7 +18,7 @@ const Dashboard: React.FC = () => {
 
     const handleShortenUrl = async () => {
         if (!url) {
-            openSnackbar("Please enter a URL.", "error");
+            toast.error("Please enter a URL.");
             return;
         }
         setShortening(true)
@@ -31,23 +29,9 @@ const Dashboard: React.FC = () => {
             console.log(data)
             setShortenedUrl(data.shortUrl);
         } catch (error: any) {
-            openSnackbar(error, "error");
+            toast.error(error);
         }
         setShortening(false)
-    };
-
-    const handleFetchOriginalUrl = async (shortenedUrl: string) => {
-        const urlParts = shortenedUrl.split('/');
-        const id = urlParts[urlParts.length - 1];
-        try {
-            const response = await axios.get(`${baseUrl}urls/${id}`);
-            const urls = await axios.get(`${baseUrl}urls`);
-            console.log(urls)
-            // window.open(response.data.url, '_blank');
-        } catch (error) {
-            console.error("Error fetching the original URL:", error);
-            alert("Failed to fetch the original URL. Please try again.");
-        }
     };
 
 
@@ -130,7 +114,6 @@ const Dashboard: React.FC = () => {
 
             </div>
 
-            {isOpen && <Snackbar message={message} onClose={closeSnackbar} type={type} />}
 
         </div>
     );

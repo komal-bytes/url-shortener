@@ -60,6 +60,7 @@ module.exports = {
       },
     },
   },
+  safeList: ["bg-gray-300", "bg-gray-700"],
   darkMode: "class",
   plugins: [nextui()],
 }
