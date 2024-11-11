@@ -17,7 +17,7 @@ export const sendRequest = async ({
     queryParams = {},
     body = {},
 }: RequestOptions) => {
-    let url = `${import.meta.env.VITE_API_URL}user/${path}`;
+    let url = `${import.meta.env.VITE_API_URL}/user/${path}`;
 
     console.log(pathParams)
     if (pathParams) {
