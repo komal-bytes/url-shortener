@@ -12,7 +12,7 @@ export const hono = new sst.aws.Function("Hono", {
 
 export const router = new sst.aws.Router("MyRouter", {
     domain: {
-        name: $app.stage === "production" ? "link.komal.codes" : undefined,
+        name: $app.stage === "production" ? process.env.API_URL : undefined,
         dns: false,
         cert: process.env.LINK_CERT
     },

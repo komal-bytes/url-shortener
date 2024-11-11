@@ -10,14 +10,14 @@ export const frontend = new sst.aws.StaticSite("Frontend", {
         command: "bun run build",
     },
     domain: {
-        name: $app.stage === "production" ? "quicklink.komal.codes" : undefined,
+        name: $app.stage === "production" ? process.env.APP_URL : undefined,
         dns: false,
         cert: process.env.QUICKLINK_CERT
     },
     environment: {
         VITE_REGION: region,
-        VITE_API_URL: "link.komal.codes",
-        VITE_APP_URL: "quicklink.komal.codes",
+        VITE_API_URL: process.env.API_URL,
+        VITE_APP_URL: process.env.APP_URL,
         VITE_APP_STAGE: $app.stage,
         VITE_SUPABASE_URL: process.env.SUPABASE_URL,
         VITE_SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY
