@@ -175,9 +175,9 @@ const Stats: React.FC = () => {
 
             </div>
 
-            <div className='w-full flex items-center justify-between'>
+            <div className='w-full flex flex-col lg:flex-row items-center justify-between'>
                 <SelectedFilters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
-                <div className='flex items-center text-2xl mt-2'><LuMousePointerClick />Total Clicks:  <span className='text-primary mx-2 font-bold'> {dataLoaded ? data?.totalClicks : <Spinner size="sm" />} </span></div>
+                <div className='flex items-center text-2xl mt-2 w-full lg:w-auto'><LuMousePointerClick />Total Clicks:  <span className='text-primary mx-2 font-bold'> {dataLoaded ? data?.totalClicks : <Spinner size="sm" />} </span></div>
             </div>
 
 

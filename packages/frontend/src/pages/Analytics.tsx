@@ -97,12 +97,14 @@ const AnalyticsPage: React.FC = () => {
 
   const shareOnPlatform = (platformUrl: string) => {
     window.open(platformUrl, "_blank");
-    setModalType(null);
+    // setModalType(null);
   };
 
 
   return (
-    <div className="p-4">
+    <div className="p-4"
+    onClick={()=>setPopoverOpen(false)}
+    >
       <h1 className="text-3xl text-center font-semibold p-2">Analytics</h1>
 
       {
@@ -155,12 +157,15 @@ const AnalyticsPage: React.FC = () => {
                             }}
                             className="cursor-pointer text-xl"
                           />
-                          <Popover placement="bottom" 
-                          // isOpen={popoverOpen === url.id}
+                          <Popover placement="bottom"
+                            isOpen={popoverOpen === url.id}
                           >
                             <PopoverTrigger>
                               <Button isIconOnly className='bg-transparent'
-                                // onClick={() => setPopoverOpen((prev) => (prev ? !popoverOpen : url.id))}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setPopoverOpen((prev) => (prev ? !popoverOpen : url.id))
+                                }}
                               >
                                 <AiOutlineMore className="cursor-pointer text-xl" />
                               </Button>
@@ -175,7 +180,7 @@ const AnalyticsPage: React.FC = () => {
                                     setSelectedUrl(url);
                                     setModalType("delete");
                                     onOpen()
-                                    // setPopoverOpen(false)
+                                    setPopoverOpen(false)
                                   }}
                                 >
                                   Delete
@@ -187,7 +192,7 @@ const AnalyticsPage: React.FC = () => {
                                     setSelectedUrl(url);
                                     setModalType("qr");
                                     onOpen()
-                                    // setPopoverOpen(false)
+                                    setPopoverOpen(false)
                                   }}
                                 >
                                   Generate QR

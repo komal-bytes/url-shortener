@@ -27,8 +27,7 @@ export const getUrl = async (event: any) => {
             }
         };
 
-        const scan = dynamoDb.send(new ScanCommand(scanParams));
-
+        const scan = await dynamoDb.send(new ScanCommand(scanParams));
         if (!scan.Items) throw new Error("Url Not Found")
 
         const userAgent = event?.req?.header('user-agent');

@@ -38,7 +38,7 @@ const SelectedFilters: React.FC<SelectedFiltersProps> = ({ selectedFilters, setS
 
     console.log(selectedFilters)
     return (
-        <div className="flex flex-wrap gap-3 p-4 rounded-md w-2/3">
+        <div className="flex flex-wrap gap-3 p-4 rounded-md w-full lg:w-2/3">
             {Object.keys(selectedFilters).map((key) => (
                 <div
                     key={key}
