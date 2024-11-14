@@ -14,7 +14,7 @@ const PrivateRoute: React.FC = () => {
     useEffect(() => {
         const checkSession = async () => {
             const { data: session } = await supabase.auth.getSession();
-            console.log(session?.session?.access_token, "heyyy")
+            // console.log(session?.session?.access_token, "heyyy")
             const { data, error } = await supabase.auth.getUser(session?.session?.access_token);
             if (data?.user) {
                 setIsLoading(false);

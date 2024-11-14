@@ -14,13 +14,13 @@ export default $config({
 
 
 
-    let { hono, router } = await import("./infra/api");
+    let { hono } = await import("./infra/api");
     await import("./infra/web");
     await import("./infra/storage");
 
     return {
       api: hono.url,
-      lambdaurl: router.url
+      // lambdaurl: router.url
     }
 
   }

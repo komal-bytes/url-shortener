@@ -14,7 +14,7 @@ export default function DefaultLayout({
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar page={page} setPage={setPage} />
-      <main className="flex-grow overflow-y-scroll my-3 w-screen">
+      <main className="flex-grow overflow-y-scroll w-full max-w-[1280px] m-auto my-3">
         {children}
       </main>
       <footer className="w-full flex items-center justify-center py-3">
@@ -24,7 +24,7 @@ export default function DefaultLayout({
           href="https://nextui-docs-v2.vercel.app?utm_source=next-pages-template"
           title="nextui.org homepage"
         >
-          <span className="text-default-600">Built with by ❤️</span>
+          <span className="text-default-600">Built with ❤️ by </span>
           <p className="text-primary">Komal Tolambia</p>
         </Link>
       </footer>

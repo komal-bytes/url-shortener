@@ -14,6 +14,8 @@ import ResetPasswordEmail from "@/pages/ResetPasswordEmail";
 
 function App() {
 
+  console.log(import.meta.env.VITE_API_URL)
+
   const [session, setSession] = useState(null)
 
   useEffect(() => {

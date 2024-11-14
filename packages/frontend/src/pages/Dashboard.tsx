@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
                 )} */}
 
                 <Button color="primary" onClick={handleShortenUrl}>
-                    {shortening ? <Spinner size='sm' color='default' /> : "Shoten"}
+                    {shortening ? <Spinner size='sm' color='default' /> : "Shorten"}
                 </Button>
 
                 {

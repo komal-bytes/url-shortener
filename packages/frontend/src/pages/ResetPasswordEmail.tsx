@@ -16,7 +16,7 @@ const ResetPasswordEmail: React.FC = () => {
         setLoading(true);
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-            redirectTo: import.meta.env.APP_STAGE === "production" ? `${import.meta.env.APP_URL}/reset-password` : 'http://127.0.0.1:5173/reset-password',
+            redirectTo: import.meta.env.VITE_APP_STAGE === "production" ? `${import.meta.env.VITE_APP_URL}/reset-password` : 'http://127.0.0.1:5173/reset-password',
         });
 
         console.log(data, "data")

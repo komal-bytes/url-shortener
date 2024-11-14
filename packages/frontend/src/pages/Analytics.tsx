@@ -106,103 +106,112 @@ const AnalyticsPage: React.FC = () => {
       <h1 className="text-3xl text-center font-semibold p-2">Analytics</h1>
 
       {
-        urls.length === 0
+
+        !dataLoaded
           ?
           <div className="w-full h-full flex flex-col item-center justify-center my-10">
             <Spinner size="lg" />
             <p className="text-primary text-xl my-5 w-full text-center">Fetching Your Data</p>
           </div>
           :
-          <Table aria-label="Analytics Table">
-            <TableHeader>
-              <TableColumn >Name</TableColumn>
-              <TableColumn>Original URL</TableColumn>
-              <TableColumn>Shortened URL</TableColumn>
-              <TableColumn>Clicks</TableColumn>
-              <TableColumn>Actions</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {
-                urls?.map((url) => (
-                  <TableRow key={url.id}>
-                    <TableCell>
-                      <Tooltip content={url?.name}>
-                        {`${url.name.substring(0, 25)}...`}
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell><a href={url.originalUrl} target="_blank" className="underline">{`${url.originalUrl.substring(0, 25)}...`}</a></TableCell>
-                    <TableCell><a href={url.shortUrl} target="_blank" className="underline">{`${url.shortUrl.substring(0, 25)}...`}</a></TableCell>
-                    <TableCell>{url.clicks}</TableCell>
-                    <TableCell>
-                      <div className="flex gap-2 items-center">
-                        <Tooltip content={copied === url.id ? "Copied" : "Copy"} color={copied ? "success" : "default"}>
-                          <Button isIconOnly className='bg-transparent' onClick={() => handleCopy(url)}>
-                            {copied === url.id ? <BsClipboardCheckFill className="text-xl text-green-500 cursor-pointer" /> : <FiCopy className="text-xl cursor-pointer" />}
-                          </Button>
+          dataLoaded && urls.length === 0
+            ?
+            <div className="h-[50vh] flex items-center justify-center">
+              <p className="text-2xl text-primary">No Data Found</p>
+            </div>
+            :
+            <Table aria-label="Analytics Table">
+              <TableHeader>
+                <TableColumn >Name</TableColumn>
+                <TableColumn>Original URL</TableColumn>
+                <TableColumn>Shortened URL</TableColumn>
+                <TableColumn>Clicks</TableColumn>
+                <TableColumn>Actions</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {
+                  urls?.map((url) => (
+                    <TableRow key={url.id}>
+                      <TableCell>
+                        <Tooltip content={url?.name}>
+                          {`${url.name.substring(0, 25)}...`}
                         </Tooltip>
-                        <AiOutlineShareAlt
-                          onClick={() => {
-                            setSelectedUrl(url);
-                            setModalType("share");
-                            onOpen()
-                          }}
-                          className="cursor-pointer text-xl"
-                        />
-                        <Popover placement="bottom" isOpen={popoverOpen === url.id}>
-                          <PopoverTrigger>
-                            <Button isIconOnly className='bg-transparent'
-                              onClick={() => setPopoverOpen((prev) => (prev ? !popoverOpen : url.id))}
-                            >
-                              <AiOutlineMore className="cursor-pointer text-xl" />
+                      </TableCell>
+                      <TableCell><a href={url.originalUrl} target="_blank" className="underline">{`${url.originalUrl.substring(0, 25)}...`}</a></TableCell>
+                      <TableCell><a href={url.shortUrl} target="_blank" className="underline">{`${url.shortUrl.substring(0, 25)}...`}</a></TableCell>
+                      <TableCell>{url.clicks}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-2 items-center">
+                          <Tooltip content={copied === url.id ? "Copied" : "Copy"} color={copied ? "success" : "default"}>
+                            <Button isIconOnly className='bg-transparent' onClick={() => handleCopy(url)}>
+                              {copied === url.id ? <BsClipboardCheckFill className="text-xl text-green-500 cursor-pointer" /> : <FiCopy className="text-xl cursor-pointer" />}
                             </Button>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <div className="flex flex-col p-2 space-y-2">
-                              <Button
-                                size="sm"
-                                className="bg-red-400"
-                                endContent={<BsTrash />}
-                                onClick={() => {
-                                  setSelectedUrl(url);
-                                  setModalType("delete");
-                                  onOpen()
-                                  setPopoverOpen(false)
-                                }}
+                          </Tooltip>
+                          <AiOutlineShareAlt
+                            onClick={() => {
+                              setSelectedUrl(url);
+                              setModalType("share");
+                              onOpen()
+                            }}
+                            className="cursor-pointer text-xl"
+                          />
+                          <Popover placement="bottom" 
+                          // isOpen={popoverOpen === url.id}
+                          >
+                            <PopoverTrigger>
+                              <Button isIconOnly className='bg-transparent'
+                                // onClick={() => setPopoverOpen((prev) => (prev ? !popoverOpen : url.id))}
                               >
-                                Delete
+                                <AiOutlineMore className="cursor-pointer text-xl" />
                               </Button>
-                              <Button
-                                size="sm"
-                                endContent={<BsQrCode />}
-                                onClick={() => {
-                                  setSelectedUrl(url);
-                                  setModalType("qr");
-                                  onOpen()
-                                  setPopoverOpen(false)
-                                }}
-                              >
-                                Generate QR
-                              </Button>
-                              <Button
-                                size="sm"
-                                endContent={<ImStatsBars2 />}
-                                onClick={() => {
-                                  navigate(`/analytics/${url?.id}`)
-                                }}
-                              >
-                                Show Analytics
-                              </Button>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="flex flex-col p-2 space-y-2">
+                                <Button
+                                  size="sm"
+                                  className="bg-red-400"
+                                  endContent={<BsTrash />}
+                                  onClick={() => {
+                                    setSelectedUrl(url);
+                                    setModalType("delete");
+                                    onOpen()
+                                    // setPopoverOpen(false)
+                                  }}
+                                >
+                                  Delete
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  endContent={<BsQrCode />}
+                                  onClick={() => {
+                                    setSelectedUrl(url);
+                                    setModalType("qr");
+                                    onOpen()
+                                    // setPopoverOpen(false)
+                                  }}
+                                >
+                                  Generate QR
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  endContent={<ImStatsBars2 />}
+                                  onClick={() => {
+                                    navigate(`/analytics/${url?.id}`)
+                                  }}
+                                >
+                                  Show Analytics
+                                </Button>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
 
-              }
-            </TableBody>
-          </Table>
+                }
+              </TableBody>
+            </Table>
 
       }
 

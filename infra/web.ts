@@ -1,22 +1,22 @@
-import { hono, router } from "./api";
-// import { userPool, identityPool, userPoolClient } from "./auth";
+import { hono } from "./api";
 
 const region = aws.getRegionOutput().name;
-
+console.log(hono.url, "hono url")
+console.log(process.env.API_URL, "api url")
 export const frontend = new sst.aws.StaticSite("Frontend", {
     path: "packages/frontend",
     build: {
         output: "dist",
         command: "bun run build",
     },
-    domain: {
-        name: $app.stage === "production" ? process.env.APP_URL : undefined,
+    domain: $app.stage === "production" ? {
+        name: "quicklink.komal.codes",
         dns: false,
         cert: process.env.QUICKLINK_CERT
-    },
+    } : undefined,
     environment: {
         VITE_REGION: region,
-        VITE_API_URL: process.env.API_URL,
+        VITE_API_URL: $app.stage === "production" ? process.env.API_URL : hono.url,
         VITE_APP_URL: process.env.APP_URL,
         VITE_APP_STAGE: $app.stage,
         VITE_SUPABASE_URL: process.env.SUPABASE_URL,

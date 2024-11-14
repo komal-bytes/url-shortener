@@ -11,12 +11,12 @@ const dynamoDb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 export const shorten = async (event: any) => {
     try {
-
+        console.log("here")
         const body = await event.req.json();
         const originalUrl = body?.url;
         const customUrl = body?.customUrl;
         const parsedUrl = new URL(event.req.url);
-        const domain = parsedUrl.hostname;
+        const domain = process.env.DOMAIN || parsedUrl.hostname;
         const user = event.get('user');
 
         if (!originalUrl) {
