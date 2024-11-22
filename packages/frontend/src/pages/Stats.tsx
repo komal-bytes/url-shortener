@@ -183,7 +183,7 @@ const Stats: React.FC = () => {
 
             {/* Graph Placeholder */}
             <Card className="shadow-none border-1 mt-4 mb-10">
-                <Graph data={data?.data} />
+                <Graph data={data?.data} dataLoaded={dataLoaded} setDataLoaded={setDataLoaded}/>
             </Card>
 
             {/* Tabbed Containers */}

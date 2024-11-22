@@ -70,12 +70,13 @@ import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipCont
 
 interface GraphProps {
     data: Record<string, number>;
+    dataLoaded: Boolean;
+    setDataLoaded: Function
 }
 
-const Graph: React.FC<GraphProps> = ({ data }) => {
+const Graph: React.FC<GraphProps> = ({ data, dataLoaded, setDataLoaded }) => {
     // Convert object format to array format
     const [chartData, setChartData] = useState([])
-    const [loading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (!data) return;
@@ -84,7 +85,7 @@ const Graph: React.FC<GraphProps> = ({ data }) => {
             clicks: data[key],
         }));
         setChartData(arr)
-        setIsLoading(false)
+        // setDataLoaded(false)
     }, [data])
 
     // Custom Tooltip to match style
@@ -106,7 +107,7 @@ const Graph: React.FC<GraphProps> = ({ data }) => {
         <div className="w-full h-96 p-4 rounded-lg shadow-md">
             <ResponsiveContainer width="100%" height="100%">
                 {
-                    loading
+                    !dataLoaded
                         ?
                         <div className='h-full flex items-center justify-center'>
                             <Spinner size='lg' />

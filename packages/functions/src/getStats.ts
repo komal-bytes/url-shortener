@@ -336,7 +336,7 @@ const processAnalyticsData = async (items: any[], time: string, createdAt: Date,
             }
             default: {
                 const currentDate = new Date(new Date(finalStartDate).toLocaleString(undefined, { timeZone }));
-                while ((currentDate).getTime() <= new Date(finalEndDate).getTime()) {
+                while ((currentDate).getTime() <= new Date(new Date(finalEndDate).toLocaleString(undefined, { timeZone })).getTime()) {
                     const dateStr = format(currentDate, 'dd/MM/yyyy');
                     data[dateStr] = 0;
                     currentDate.setDate(currentDate.getDate() + 1);
@@ -365,9 +365,6 @@ const processAnalyticsData = async (items: any[], time: string, createdAt: Date,
     };
 
     initializeData();
-
-    console.log(data, "data 369");
-    // return;
 
     items.forEach((item) => {
         const itemDate = new Date(new Date(item.timestamp).toLocaleString(undefined, { timeZone }));
@@ -422,7 +419,6 @@ export const getStats = async (event: any) => {
         // Convert `startDate` and `endDate` to UTC if provided
         const utcStartDate = startDate ? convertISTToUTC(startDate) : undefined;
         const utcEndDate = endDate ? convertISTToUTC(endDate) : undefined;
-
         const getParams = {
             TableName: Resource.Urls.name,
             Key: { id: urlId },
@@ -438,13 +434,12 @@ export const getStats = async (event: any) => {
         // Fetch analytics data from DynamoDB
         const params = { device, browser, os, city, country, referrer, referralURL };
         const items = await fetchAnalyticsData(urlId, params, finalStartDate, finalEndDate);
-        console.log("reached here")
+
         // Process the data to fit the response format
         const result = await processAnalyticsData(items, time, url?.Item?.createdAt, finalStartDate, finalEndDate, timeZone);
 
-        // console.log(queries, "queries");
 
-        console.log(result.data, "result");
+        // console.log(result.data, "result");
 
         return event.json(result, 200);
     } catch (error) {
@@ -487,7 +482,7 @@ const getLast7Days = (timeZone: string): Record<string, { date: string; clicks: 
     const days: Record<string, { date: string; clicks: number }> = {};
     const now = new Date().toLocaleString(undefined, { timeZone });
     // const currentDayIndex = now.getDay();
-    console.log(now, "index")
+    // console.log(now, "index")
     for (let i = 6; i >= 0; i--) {
         const date = subDays(now, i);
         // console.log(date)

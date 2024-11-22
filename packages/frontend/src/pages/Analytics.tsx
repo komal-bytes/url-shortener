@@ -100,7 +100,6 @@ const AnalyticsPage: React.FC = () => {
     // setModalType(null);
   };
 
-
   return (
     <div className="p-4"
     onClick={()=>setPopoverOpen(false)}
@@ -242,27 +241,27 @@ const AnalyticsPage: React.FC = () => {
               <div className="flex gap-4 justify-center">
                 <FaWhatsapp
                   className="cursor-pointer text-green-500 text-3xl"
-                  onClick={() => shareOnPlatform(`https://wa.me/?text=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`https://wa.me/?text=${selectedUrl.shortUrl}`)}
                 />
                 <FaTelegram
                   className="cursor-pointer text-blue-400 text-3xl"
-                  onClick={() => shareOnPlatform(`https://t.me/share/url?url=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`https://t.me/share/url?url=${selectedUrl.shortUrl}`)}
                 />
                 <FaEnvelope
                   className="cursor-pointer text-red-500 text-3xl"
-                  onClick={() => shareOnPlatform(`mailto:?body=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`mailto:?body=${selectedUrl.shortUrl}`)}
                 />
                 <FaFacebook
                   className="cursor-pointer text-blue-600 text-3xl"
-                  onClick={() => shareOnPlatform(`https://www.facebook.com/sharer.php?u=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`https://www.facebook.com/sharer.php?u=${selectedUrl.shortUrl}`)}
                 />
                 <FaSquareXTwitter
                   className="cursor-pointer text-black text-3xl"
-                  onClick={() => shareOnPlatform(`https://twitter.com/intent/tweet?url=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`https://twitter.com/intent/tweet?url=${selectedUrl.shortUrl}`)}
                 />
                 <FaLinkedin
                   className="cursor-pointer text-blue-700 text-3xl"
-                  onClick={() => shareOnPlatform(`https://www.linkedin.com/sharing/share-offsite/?url=${selectedUrl.shortenedUrl}`)}
+                  onClick={() => shareOnPlatform(`https://www.linkedin.com/sharing/share-offsite/?url=${selectedUrl.shortUrl}`)}
                 />
               </div>
             )}
