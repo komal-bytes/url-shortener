@@ -18,15 +18,17 @@ export default function DefaultLayout({
         {children}
       </main>
       <footer className="w-full flex items-center justify-center py-3">
-        <Link
-          isExternal
-          className="flex items-center gap-1 text-current"
-          href="https://nextui-docs-v2.vercel.app?utm_source=next-pages-template"
-          title="nextui.org homepage"
-        >
+
+        <p className="flex items-center gap-1 text-current">
           <span className="text-default-600">Built with ❤️ by </span>
-          <p className="text-primary">Komal Tolambia</p>
-        </Link>
+          <Link
+            isExternal
+            href="https://komal.codes"
+            title="nextui.org homepage"
+          >
+            <span className="text-primary">Komal Tolambia</span>
+          </Link>
+        </p>
       </footer>
     </div>
   );
